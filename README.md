@@ -1,392 +1,177 @@
-# Todo App - Individual Final Assignment
----
-## 📱 App Description
+# PlanWise
 
-A full-featured **Todo List application** built with Flutter that demonstrates modern mobile development practices including offline-first architecture, cloud backend integration, and runtime feature flags.
+A beautiful and intuitive note-taking iOS application built with SwiftUI that helps you organize your thoughts with visual imagery.
 
-### Key Features:
-- ✅ **Create, Read, Update, Delete** todos with ease
-- 📸 **Photo Attachments** - Capture photos or choose from gallery
-- 🔒 **Firebase Authentication** - Secure email/password login and signup
-- 💾 **Offline-First** - Works seamlessly without internet connection
-- ☁️ **Cloud Sync** - Automatic synchronization with PostgreSQL backend
-- 🌓 **Dark Mode** - Toggle between light and dark themes
-- 🎨 **Modern UI** - Beautiful, intuitive interface with smooth animations
-- 🚩 **Feature Flags** - Runtime control over app features
+## Features
 
----
+### 📝 Core Functionality
+- **Create Notes**: Easily create notes with custom titles and accompanying images
+- **Image Integration**: Search for images via Pixabay API or upload from your photo library
+- **Rich Text Editing**: Write and edit note content with a clean text editor
+- **Recent Notes**: Quick access to your most recently opened note
+- **User Profiles**: Personalized experience with user profiles and custom profile pictures
 
-## 🎯 Assignment Requirements Met
+### 🎨 User Experience
+- **Modern Dark Theme**: Sleek purple and dark-themed interface
+- **Smooth Animations**: Polished transitions and interactive elements
+- **Welcome Animation**: First-time user greeting with personalized welcome message
+- **Image Management**: Change note images anytime from the photo library
+- **Persistent Storage**: All notes and images are saved locally using SwiftData
 
-### ✅ 1. Flutter App (Core)
-- **Platform:** Android (iOS compatible)
-- **Screens:** 
-  - Authentication Screen (Login/Signup)
-  - Todo List Screen
-  - Add Todo Screen
-- **Mobile-First UX:**
-  - Smooth navigation with back buttons
-  - Loading indicators with progress animations
-  - Empty state with encouraging messages
-  - Error handling via SnackBars and dialogs
-  - Pull-to-refresh functionality
-  - Swipe-to-delete gestures
+### 🖼️ Image Features
+- **Pixabay Integration**: Automatically fetch relevant images based on note titles
+- **Photo Library Access**: Upload custom images from your device
+- **Smart Fallbacks**: Automatic fallback to random images if searches fail
+- **Local Storage**: Efficient image caching and management
 
-### ✅ 2. Offline-First Behavior
-- **Local Storage:** Hive NoSQL database
-- **Cached Data:** All todos stored locally for instant access
-- **Offline Functionality:**
-  - View todos without internet
-  - Create/edit todos offline
-  - Automatic sync when connection restored
-  - Visual online/offline indicators
-  - Graceful fallback messages
+## Requirements
 
-### ✅ 3. Device APIs
-**Camera & Photo Library (image_picker)**
-- Take photos with device camera
-- Choose photos from gallery
-- Photo preview and management
-- Local photo storage with todos
-- Full-screen photo viewing
+- **iOS**: 17.0 or later
+- **Xcode**: 15.0 or later
+- **Swift**: 5.9 or later
 
-### ✅ 4. Backend + Cloud Function
-**Technology Stack:**
-- **Database:** PostgreSQL on Google Cloud SQL
-- **Backend:** Dart Cloud Run service
-- **Authentication:** Firebase Authentication
+## Installation & Setup
 
-**Database Schema:**
-```sql
-CREATE TABLE todos (
-    id VARCHAR(255) PRIMARY KEY,
-    user_id VARCHAR(255) NOT NULL,
-    title TEXT NOT NULL,
-    is_completed BOOLEAN DEFAULT FALSE,
-    photo_path TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+### 1. Clone or Download the Project
+Download the project files and open the project in Xcode.
 
-**API Endpoints:**
-- `GET /health` - Health check with database status
-- `GET /todos` - Fetch user's todos
-- `POST /todos` - Create new todo
-- `PUT /todos/:id` - Update todo
-- `DELETE /todos/:id` - Delete todo
-
-**Cloud Run Service URL:**  
-`https://todo-api-416899989790.northamerica-northeast2.run.app`
-
-**Authentication:**
-- Firebase email/password authentication
-- Secure user sessions
-- Password reset functionality
-- Account creation and login flows
-
-### ✅ 5. Feature Flags
-**Two Runtime Feature Flags:**
-
-1. **`enable_photos`** - Photo functionality control
-   - **Enabled:** Photo button visible, camera/gallery access
-   - **Disabled:** Photo features hidden
-   - **Default:** Enabled
-
-2. **`enable_dark_mode`** - Theme control
-   - **Enabled:** Dark theme with inverted colors
-   - **Disabled:** Light theme
-   - **Default:** Disabled (Light mode)
-   - **Toggle:** Sun/moon icon in app bar for instant switching
-
-**Implementation:**  
-Located in `lib/services/feature_flag_service.dart`  
-Can be integrated with Intellitoggle or Firebase Remote Config for true runtime updates
-
----
-
-## 🛠️ Technical Architecture
-
-### Frontend (Flutter)
-```
-lib/
-├── main.dart                    # App entry point with Firebase init
-├── models/
-│   └── todo.dart               # Todo data model with Hive annotations
-├── screens/
-│   ├── auth_screen.dart        # Login/Signup interface
-│   ├── todo_list_screen.dart   # Main todo list view
-│   └── add_todo_screen.dart    # Create todo interface
-├── services/
-│   ├── auth_service.dart       # Firebase authentication logic
-│   ├── api_service.dart        # Backend API communication
-│   ├── storage_service.dart    # Hive local database
-│   └── feature_flag_service.dart # Feature flag management
-```
-
-### Backend (Dart Cloud Run)
-```
-cloud_function/
-├── bin/
-│   └── server.dart             # RESTful API server
-├── pubspec.yaml                # Dart dependencies
-└── Dockerfile                  # Container configuration
-```
-
-### Infrastructure
-- **GCP Project:** mohammadi-fall-25-final
-- **Cloud SQL:** PostgreSQL 15
-- **Cloud Run:** Serverless container
-- **Firebase:** Authentication service
-
----
-
-## 🚀 How to Run
-
-### Prerequisites
-- Flutter SDK (3.0+)
-- Android Studio / VS Code
-- Java 17 (for Android Gradle 8.1.1)
-- Xcode 14+ (for iOS/macOS)
-- GCP account with Cloud SQL and Cloud Run enabled
-- Firebase project with Authentication enabled
-
----
-
-## 📱 Running on Android
-
-### Setup
-1. **Clone the repository:**
-   ```bash
-   git clone <repository-url>
-   cd todolist_app
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   flutter pub get
-   flutter packages pub run build_runner build
-   ```
-
-3. **Configure Firebase:**
-   - Ensure `android/app/google-services.json` is present
-   - File is already configured for package: `com.final.app`
-
-4. **Update API URL:**
-   - Open `lib/services/api_service.dart`
-   - Verify line 10 has the correct Cloud Run URL:
-     ```dart
-     static const String _baseUrl = 'https://todo-api-416899989790.northamerica-northeast2.run.app';
-     ```
-
-### Run on Android Device/Emulator
+### 2. Open in Xcode
 ```bash
-# Connect Android device or start emulator
-flutter devices
+# Navigate to the project directory
+cd PlanWise
 
-# Run the app
-flutter run
+# Open the project
+open PlanWise.xcodeproj
 ```
 
-### Build APK
-```bash
-# Debug APK
-flutter build apk --debug
+### 3. Configure Pixabay API (Optional)
+The app includes a Pixabay API key for image searches. If you want to use your own key:
 
-# Release APK
-flutter build apk --release
-```
-
-**APK Location:** `build/app/outputs/flutter-apk/app-release.apk`
-
----
-
-## 🍎 Running on iOS/macOS (Xcode)
-
-### Prerequisites
-- macOS with Xcode 14+
-- CocoaPods installed: `sudo gem install cocoapods`
-- Active Apple Developer account (for device testing)
-
-### Setup
-
-1. **Navigate to iOS directory:**
-   ```bash
-   cd ios
+1. Get a free API key from [Pixabay](https://pixabay.com/api/docs/)
+2. Open `PixabayResponse.swift`
+3. Replace the API key in the `PixabayService` class:
+   ```swift
+   private let apiKey = "YOUR_API_KEY_HERE"
    ```
 
-2. **Install iOS dependencies:**
-   ```bash
-   pod install
-   ```
+### 4. Build and Run
+1. Select a target device or simulator (iPhone running iOS 17.0+)
+2. Press `⌘ + R` or click the Run button
+3. The app will build and launch
 
-3. **Configure Firebase for iOS:**
-   
-   **Download `GoogleService-Info.plist`:**
-   - Go to [Firebase Console](https://console.firebase.google.com/)
-   - Select project: `mohammadi-fall-25-final-86620`
-   - Click iOS app (or add iOS app if not exists)
-   - Bundle ID: `com.final.app`
-   - Download `GoogleService-Info.plist`
-   - Place in: `ios/Runner/GoogleService-Info.plist`
+## First Launch
 
-4. **Update Bundle Identifier:**
-   - Open Xcode: `open Runner.xcworkspace`
-   - Select **Runner** project in left sidebar
-   - Select **Runner** target
-   - **General** tab → Set Bundle Identifier: `com.final.app`
-   - **Signing & Capabilities** → Select your development tea# Todo App - Final Assignment
+On first launch, you'll be greeted with an onboarding screen:
 
-**Student:** Mohammad I  
-**GCP Project:** mohammadi-fall-25-final  
-**Firebase Project:** N/A (using Cloud Run directly)
+1. **Enter Your Name**: Provide your name for personalization
+2. **Set Date of Birth**: Select your birthday
+3. **Get Started**: Complete onboarding to access the app
 
-## App Idea
-A simple todo list application where users can create, view, and manage their todos with optional photo attachments. The app demonstrates offline-first behavior, device API integration, and backend communication.
+After onboarding, you'll see a welcome animation with your name!
 
-## Device API Used
-**Camera and Photo Library (image_picker)**
-- Users can attach photos to todos using:
-  - Device camera (take new photo)
-  - Photo library (choose existing photo)
-- Photos are stored locally with each todo
-- Feature can be toggled on/off via feature flag
+## How to Use
 
-## Offline Strategy
-**Hive Local Database**
-- All todos are cached locally using Hive
-- App loads from cache first (instant display)
-- Syncs with backend when online
-- New todos saved locally immediately, synced later
-- Unsynced todos marked with sync icon
-- Graceful offline fallback with user notifications
+### Creating a Note
+1. Tap the **+** button in the top-right corner
+2. Enter a note title
+3. (Optional) Enter an image search term
+4. Choose from:
+   - **Search Images**: Browse 6 relevant images from Pixabay
+   - **Photo Library**: Upload an image from your device
+   - **Create without search**: Auto-select an image based on title
 
-## Cloud Function Purpose
-**Dart Cloud Run Service** deployed at `https://todo-api-xxxxx-nn.a.run.app`
+### Editing a Note
+1. Tap on any note card from the home screen
+2. Edit the content in the text editor
+3. Changes are automatically saved
 
-Endpoints:
-- `GET /todos` - Fetch all todos
-- `POST /todos` - Add new todo
-- `PUT /todos/:id` - Update todo
-- `DELETE /todos/:id` - Delete todo
-- `GET /health` - Health check
+### Changing Note Images
+1. Open a note or tap the photo icon on a note card
+2. Select **Change Image** (camera icon)
+3. Choose a new image from your photo library
 
-Backend uses PostgreSQL on GCP with the following schema:
-```sql
-CREATE TABLE todos (
-    id VARCHAR(255) PRIMARY KEY,
-    title TEXT NOT NULL,
-    is_completed BOOLEAN DEFAULT FALSE,
-    photo_path TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+### Viewing Recent Notes
+- Navigate to the **Recent** tab to quickly access your last opened note
 
-## Feature Flag(s)
-
-**1. `enable_photos`** - Controls camera/photo functionality
-- When `true`: Photo button visible, users can attach photos via camera or gallery
-- When `false`: Photo button hidden, photo feature disabled
-- Toggle by changing `_enablePhotos` in `lib/services/feature_flag_service.dart`
-
-**2. `enable_dark_mode`** - Controls app theme
-- When `true`: App uses dark theme with inverted colors (dark background, light text)
-- When `false`: App uses light theme (light background, dark text)
-- Toggle by changing `_enableDarkMode` in `lib/services/feature_flag_service.dart`
-- Requires app restart to take effect
-
-Both flags can be integrated with Intellitoggle or Firebase Remote Config for runtime updates.
-
-## Test Credentials
-No authentication required (simplified for assignment).
-
-## How to Run
-
-### Prerequisites
-- Flutter SDK 3.0+
-- Android Studio / VS Code
-- GCP account with Cloud Run enabled
-
-### Setup
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   flutter pub get
-   flutter packages pub run build_runner build
-   ```
-
-3. Deploy Cloud Function:
-   ```bash
-   cd cloud_function
-   ./deploy.sh
-   ```
-
-4. Update API URL in `lib/services/api_service.dart` with your Cloud Run URL
-
-5. Run the app:
-   ```bash
-   flutter run
-   ```
-
-### Build APK
-```bash
-flutter build apk --release
-```
-
-APK location: `build/app/outputs/flutter-apk/app-release.apk`
-
-## Features Demonstrated
-
-✅ **Mobile-first UX**
-- Clean, intuitive todo list interface
-- Smooth navigation between screens
-- Loading states with circular progress indicators
-- Empty state messages
-- Pull-to-refresh functionality
-
-✅ **Offline-First Behavior**
-- Hive local database caching
-- Instant data display from cache
-- Background sync when online
-- Offline indicators in UI
-- Retry mechanism for failed syncs
-
-✅ **Device API Integration**
-- Camera access via image_picker
-- Photo preview before saving
-- Local photo storage
-- Remove photo option
-
-✅ **Backend Communication**
-- RESTful API with Cloud Run
-- PostgreSQL database
-- Error handling with user feedback
-- Connectivity status checking
-
-✅ **Feature Flag Control**
-- Runtime toggle for photo feature
-- Affects UI visibility and functionality
-- Easy to extend for more flags
+### Managing Your Profile
+1. Go to the **Profile** tab
+2. Tap the camera icon to change your profile picture
+3. View your name, birthday, and total note count
 
 ## Project Structure
+
 ```
-todo_app/
-├── lib/
-│   ├── main.dart
-│   ├── models/
-│   │   └── todo.dart
-│   ├── screens/
-│   │   ├── todo_list_screen.dart
-│   │   └── add_todo_screen.dart
-│   ├── services/
-│   │   ├── api_service.dart
-│   │   ├── storage_service.dart
-│   │   └── feature_flag_service.dart
-├── cloud_function/
-│   ├── bin/server.dart
-│   ├── pubspec.yaml
-│   └── Dockerfile
-└── README.md
+PlanWise/
+├── PlanWiseApp.swift          # App entry point
+├── Models/
+│   ├── NoteItem.swift         # Note data model
+│   └── UserManager.swift      # User state management
+├── Views/
+│   ├── OnboardingView.swift   # First-launch onboarding
+│   ├── MainTabView.swift      # Tab navigation
+│   ├── HomeView.swift         # Main notes list
+│   ├── NoteDetailView.swift   # Note editing view
+│   ├── RecentNoteView.swift   # Recent note display
+│   ├── ProfileView.swift      # User profile
+│   ├── NoteCardView.swift     # Note card component
+│   └── ImagePickerView.swift  # Image selection UI
+├── Services/
+│   ├── PixabayResponse.swift  # Pixabay API integration
+│   ├── PhotoLibraryPicker.swift   # Photo library access
+│   └── ProfileImagePicker.swift   # Profile image picker
+└── Utilities/
+    └── Extensions.swift       # Color and UI extensions
 ```
 
-## Time Spent
-Approximately 3 hours for complete implementation and testing.
+## Permissions Required
+
+The app requires the following permissions:
+- **Photo Library Access**: To upload custom images for notes and profile pictures
+
+These permissions will be requested automatically when needed.
+
+## Data Storage
+
+- **Notes**: Stored locally using SwiftData
+- **Images**: Saved in the app's documents directory
+- **User Data**: Stored in UserDefaults (name, date of birth, preferences)
+
+## Troubleshooting
+
+### Images Not Loading
+- Check your internet connection for Pixabay images
+- Verify photo library permissions are granted
+
+### Build Errors
+- Ensure you're using Xcode 15.0 or later
+- Clean build folder: `⌘ + Shift + K`
+- Rebuild: `⌘ + B`
+
+### App Crashes on Launch
+- Delete the app from your device/simulator
+- Clean build folder and rebuild
+- Check that iOS version is 17.0 or later
+
+## Future Enhancements
+
+Potential features for future versions:
+- iCloud sync across devices
+- Note categories and tags
+- Search functionality
+- Export notes as PDF
+- Dark/light theme toggle
+- Note sharing capabilities
+
+## Credits
+
+- **Images**: Powered by [Pixabay API](https://pixabay.com/)
+- **Framework**: Built with SwiftUI and SwiftData
+- **Icons**: SF Symbols by Apple
+
+## License
+
+This project is for educational and personal use.
+
+---
+
+**Enjoy using PlanWise! 📝✨**
